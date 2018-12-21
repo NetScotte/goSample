@@ -62,10 +62,51 @@ func array_sample() {
     fmt.Println("array cap: ", cap(array))
     fmt.Println()
 }
+
+func slice_sample() {
+    s := []int{1,2,3,4}
+    s[0]=0
+    m := make([]int, 0, 5)
+    a := append(m, 1, 2, 3)
+    fmt.Println("m is: ", m)
+    fmt.Println("a is: ", a)
+    // error operator
+    // p := s + m
+    for _, value := range s {
+        a = append(a, value)
+    }
+    fmt.Println("s is: ", s)
+    fmt.Println("a is: ", a)
+}
+
+func map_sample() {
+    // define map, error sample: m = make(map[string]string ; m := map[string]string
+    m := make(map[string]string)
+
+    // set value for map
+    m["wh"] = "wuhan"
+    m["bj"] = "beijing"
+    fmt.Println("m is: ", m)
+
+    // change map
+    m["wh"] = "WuHan"
+    fmt.Println("m is: ", m)
+
+    // check map key, 'wh' is rune
+    value, ok := m["wh"]
+
+    // can't use %s for ok
+    fmt.Println("value: ", value, "ok: ", ok)
+
+    // delete map key
+    delete(m, "bj")   
+}
     
 func main() {
     pointer_sample()
     nil_sample()
     struct_sample()
     array_sample()
+    slice_sample()
+    map_sample()
 }
