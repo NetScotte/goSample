@@ -1,6 +1,10 @@
 package main
 import "fmt"
 
+
+// Printf提供：
+// %s 字符串
+// %T   类型
 func pointer_sample() {
     fmt.Println("pointer_sample")
     // define a pointer
@@ -72,9 +76,11 @@ func slice_sample() {
     fmt.Println("a is: ", a)
     // error operator
     // p := s + m
-    for _, value := range s {
-        a = append(a, value)
-    }
+    // for _, value := range s {
+    //     a = append(a, value)
+    // }
+    // 优雅得合并
+    a = append(a, s...)
     fmt.Println("s is: ", s)
     fmt.Println("a is: ", a)
 }
