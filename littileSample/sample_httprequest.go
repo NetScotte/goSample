@@ -8,11 +8,11 @@ import (
 )
 
 func main() {
-	req, err := http.NewRequest("POST", "http://42.159.89.89/object/HOST/instance/_search", nil)
+	req, err := http.NewRequest("POST", "http://www.baidu.com/_search", nil)
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
-	req.Header.Set("Org", "666003")
-	req.Header.Set("User", "easyops")
-	req.Host = "cmdb.easyops-only.com"
+	req.Header.Set("haha", "haha")
+	req.Header.Set("User", "user")
+	req.Host = "www.baidu.com"
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
