@@ -9,9 +9,8 @@ import (
 )
 
 // echo "hello go" | base64
-const data = '
-aGVsbG8gZ28K
-'
+const data = `
+aGVsbG8gZ28K`
 
 func main() {
 	var r io.Reader
