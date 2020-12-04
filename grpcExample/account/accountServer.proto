@@ -1,0 +1,17 @@
+syntax = "proto3";
+package account;
+
+
+service AccountServer {
+    rpc GetUserById(Id) returns (UserInfo) {}
+}
+
+message Id {
+    int32 id = 1;
+}
+
+message UserInfo {
+    string name = 1;
+    int32 age = 2;
+    string sex = 3;
+}
