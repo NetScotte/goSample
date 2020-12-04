@@ -1,4 +1,4 @@
-package myhttp
+package myhttpserver
 
 import (
 	"fmt"
