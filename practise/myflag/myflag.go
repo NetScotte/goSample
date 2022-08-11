@@ -1,22 +1,22 @@
 package main
 
-// 可以通过os.Args实现参数的解析
-
+// 命令行参数解析
 import (
 	"flag"
 	"fmt"
 )
 
-var p1 int 
-var p2 string 
+var name string
 
 func init() {
-	flag.IntVar(&p1, "n", 0, "demo number")
-	flag.StringVar(&p2, "s", "blank", "demo string")
+	flag.StringVar(&name, "name", "everyone", "The greeting object.")
+	// you can receive and return a var like this
+	// var name = flag.String("name", "everyone", "the greeting object.")
+	// 另外还有方法: Int, Bool
 }
 
+// 执行示例: go run sample_flag.go -name netliu
 func main() {
 	flag.Parse()
-	fmt.Println("number is: ", p1)
-	fmt.Println("string is: ", p2)
+	fmt.Printf("Hello, %s\n", name)
 }
