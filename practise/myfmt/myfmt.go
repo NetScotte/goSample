@@ -7,11 +7,11 @@ Scanln
 Scanf
 Scanln
 格式化输出
-Printf
+Printf		向stdout中输出内容
 Println
-Sprintf
+Sprintf		构造字符串
 Sprintln
-Fprintf
+Fprintf		向可写入对象中写入数据
 Fprintln
 
 */
@@ -23,7 +23,7 @@ import (
 
 func test1() {
 	fmt.Println("Sample input-----multi value in one line")
-	var a int 
+	var a int
 	var b string
 	var c float32
 	fmt.Println("input a b c")
@@ -33,7 +33,7 @@ func test1() {
 
 func test2() {
 	fmt.Println("Sample input-----one line one value")
-	var a int 
+	var a int
 	var b string
 	var c float32
 	fmt.Println("input a")
@@ -59,14 +59,12 @@ func test3() {
 	fmt.Printf("a=%d, b=%s, c=%f\n", a, b, c)
 }
 
-func os_fmt(){
+func os_fmt() {
 	var b [16]byte
 	os.Stdout.Write([]byte("input some\n"))
 	os.Stdin.Read(b[:])
 	os.Stdout.Write(b[:])
 }
-
-
 
 func main() {
 	//test1()

@@ -1,16 +1,15 @@
 package main
 
+// switch case示例
 
 import (
 	"fmt"
 )
 
-
-
 func main() {
 	a := "hello"
 	var i interface{}
-	i = a 
+	i = a
 	switch i.(type) {
 	case int:
 		fmt.Println("a is int")

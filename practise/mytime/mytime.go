@@ -2,9 +2,7 @@ package mytime
 
 /*
 在进行时间转换时，参考格式用2006-01-02 15:04:05进行指定
- */
-
-
+*/
 
 import (
 	"fmt"
@@ -34,7 +32,7 @@ func Sample_time() {
 	parser_timestamp := time.Unix(int64(timestamp), 0)
 	fmt.Printf("parser %T(%v) to %T(%s)\n", timestamp, timestamp, parser_timestamp, parser_timestamp)
 	// 时间加减
-	tenMinutesAfter := time.Now().Add(10*time.Minute)
+	tenMinutesAfter := time.Now().Add(10 * time.Minute)
 	fmt.Println("ten minutes after is: ", tenMinutesAfter)
 }
 
@@ -43,4 +41,10 @@ func Sample_tiker(limit int) {
 	for v := range tiker {
 		fmt.Println(v)
 	}
+}
+
+func Sample_cost() {
+	start := time.Now()
+	time.Sleep(2 * time.Second)
+	fmt.Printf("cost: %v\n", time.Since(start).String())
 }

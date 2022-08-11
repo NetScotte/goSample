@@ -1,17 +1,14 @@
 package myosrw
 
-
 // 文件读写示例
 // 可以使用bufio对文件对象进行封装
 // 可以使用ioutil的Readfile()和WriteFile()读写文件
 import (
-	"os"
 	"fmt"
-	"log"
 	"io"
+	"log"
+	"os"
 )
-
-
 
 // 读取文件内容
 func Sample_readfile(filename string) []byte {
@@ -30,40 +27,38 @@ func Sample_readfile(filename string) []byte {
 		if err == io.EOF {
 			break
 		}
-		counts += c 
+		counts += c
 		// 合并slice
 		data = append(data, temp[:c]...)
 	}
 	fmt.Printf("read counts %d, content: \n%s\n", counts, data)
-	return data 
+	return data
 }
 
-
 // 向文件中写入数据
-func Sample_writefile(filecontent []byte, filename string) (count int, err error){
+func Sample_writefile(filecontent []byte, filename string) (count int, err error) {
 	// os.O_TRUNC 清空  os.O_APPEND 追加
-	file, err := os.OpenFile(filename, os.O_RDWR | os.O_CREATE, 0755)
+	file, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE, 0755)
 	defer file.Close()
 	if err != nil {
 		log.Fatal("open error: ", err)
-		return 0, err 
+		return 0, err
 	}
 	// Write(), WriteAt() WriteString()
 	count, err = file.Write(filecontent)
 	defer file.Close()
 	if err != nil {
 		log.Fatal("write error:", err)
-		return 0, err 
+		return 0, err
 	}
 	fmt.Printf("write %d contents to file\n", count)
 	file.Close()
-	return count, nil 
+	return count, nil
 }
-
 
 // 文件系统查看
 func Sample_filesystem() {
-		// 切换到指定目录下
+	// 切换到指定目录下
 	fmt.Println("(os.Chdir) change dir")
 	err := os.Chdir("../notitle/")
 	if err != nil {
@@ -81,7 +76,7 @@ func Sample_filesystem() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// 获取当前目录的所有文件名，使用该方法后file.Readdir返回空	
+	// 获取当前目录的所有文件名，使用该方法后file.Readdir返回空
 	// files, err := file.Readdirnames(0)
 	// if err != nil {
 	// 	log.Fatal(err)
