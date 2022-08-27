@@ -1,11 +1,11 @@
-package main
+package mysort
 
 import (
 	"fmt"
 	"sort"
 )
 
-func main() {
+func SampleSort() {
 	a := []int{5, 1, 4, 2, 4}
 	sort.Ints(a)
 	sort.Sort(sort.Reverse(sort.IntSlice(a)))

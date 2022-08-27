@@ -10,6 +10,7 @@ import (
 )
 
 func Sample_ioreader() {
+	// Dial返回net.Conn类型，实现了io.Reader和io.Writer
 	conn, err := net.Dial("tcp", "rpcx.site:80")
 	if err != nil {
 		log.Fatalln(err)

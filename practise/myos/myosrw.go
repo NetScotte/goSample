@@ -1,4 +1,4 @@
-package myosrw
+package myos
 
 // 文件读写示例
 // 可以使用bufio对文件对象进行封装
@@ -46,13 +46,11 @@ func Sample_writefile(filecontent []byte, filename string) (count int, err error
 	}
 	// Write(), WriteAt() WriteString()
 	count, err = file.Write(filecontent)
-	defer file.Close()
 	if err != nil {
 		log.Fatal("write error:", err)
 		return 0, err
 	}
 	fmt.Printf("write %d contents to file\n", count)
-	file.Close()
 	return count, nil
 }
 

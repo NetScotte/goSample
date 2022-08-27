@@ -1,19 +1,12 @@
 package main
 
 /*
-格式化输入
-Scanf
-Scanln
-Scanf
-Scanln
-格式化输出
-Printf		向stdout中输出内容
-Println
-Sprintf		构造字符串
-Sprintln
-Fprintf		向可写入对象中写入数据
-Fprintln
-
+主要分为两类方法，一个scan，一个print
+前缀包括F和S，后缀包括f和ln
+如果前缀是"F", 则指定了io.Writer
+如果前缀是"S", 则是输出到字符串
+如果后缀是"f", 则指定了format
+如果后缀是"ln", 则有换行符
 */
 
 import (

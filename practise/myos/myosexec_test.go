@@ -1,10 +1,10 @@
-package myosexec
+package myos
 
 import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func Test_exec(t *testing.T) {
 	Sample_lookpath()
 	Sample_cmd()
 	Sample_cmd_run()

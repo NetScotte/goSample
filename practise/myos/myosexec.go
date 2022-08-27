@@ -1,4 +1,7 @@
-package myosexec
+package myos
+
+// os标准包，是一个比较重要的包，顾名思义，主要是在服务器上进行系统的基本操作，如文件操作，目录操作，执行命令，信号与中断，进程，系统状态等等。
+//	在os包下，有exec，signal，user三个子包。
 
 import (
 	"bytes"
