@@ -1,5 +1,6 @@
 package main
 
 func main() {
-	req, err := http.re
+	a := "hello"
+	println("test: %v\n", a)
 }

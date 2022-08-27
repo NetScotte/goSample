@@ -1,4 +1,4 @@
-package myreader
+package myio
 
 import (
 	"testing"

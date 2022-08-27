@@ -1,12 +1,12 @@
-package myreader
+package myio
 
 import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"strings"
 	"log"
 	"net"
+	"strings"
 )
 
 func Sample_ioreader() {
@@ -33,7 +33,6 @@ func Sample_ioreader() {
 	fmt.Println("total response size: ", sb.Len())
 }
 
-
 func Sample_iocopy() {
 	conn, err := net.Dial("tcp", "rpcx.site:80")
 	if err != nil {
@@ -51,7 +50,7 @@ func Sample_iocopy() {
 	fmt.Println("total response size: ", sb.Len())
 }
 
-func Sample_ioreadall(){
+func Sample_ioreadall() {
 	conn, err := net.Dial("tcp", "rpcx.site:80")
 	if err != nil {
 		log.Fatalln(err)
@@ -70,7 +69,7 @@ func Sample_ioreadall(){
 	fmt.Println("total response size: ", len(data))
 }
 
-func Sample_ioreadfull(){
+func Sample_ioreadfull() {
 	conn, err := net.Dial("tcp", "rpcx.site:80")
 	if err != nil {
 		log.Fatalln(err)
@@ -93,7 +92,7 @@ func Sample_ioreadfull(){
 	fmt.Println("total response size: ", sb.Len())
 }
 
-func Sample_iomore(){
+func Sample_iomore() {
 	conn, err := net.Dial("tcp", "rpcx.site:80")
 	if err != nil {
 		log.Fatalln(err)
@@ -117,4 +116,3 @@ func Sample_iomore(){
 	fmt.Println("total response size: ", sb.Len())
 
 }
-
