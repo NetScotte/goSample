@@ -1,16 +1,16 @@
 package myhttpserver
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
 )
 
-
-func SampleTemplate(w http.ResponseWriter, r *http.Request) {
+func TemplateHandler(w http.ResponseWriter, r *http.Request) {
 	data := &struct {
 		Title string
-		Body string
+		Body  string
 	}{
 		"Template",
 		"Sample Tempalte",
@@ -31,8 +31,7 @@ func SampleTemplate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
-func SampleHandler(w http.ResponseWriter, r *http.Request) {
+func MetaHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	data, err := fmt.Fprintf(w, "Method: %v\n", r.Method)
 	data, err = fmt.Fprintf(w, "Path: %v\n", r.URL.Path)
@@ -43,7 +42,7 @@ func SampleHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func IndexHandle(w http.ResponseWriter, r *http.Request) {
+func CookieHandler(w http.ResponseWriter, r *http.Request) {
 
 	/*cookies := r.Cookies()
 	for index, cookie := range cookies {
@@ -68,11 +67,54 @@ func IndexHandle(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("hello"))
 }
 
+type PostRequest struct {
+	Name string
+}
+
+func GetHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		fmt.Fprint(w, "Not Allowed Method")
+		return
+	}
+	name := r.FormValue("name")
+	if name == "" {
+		name = "client"
+	}
+	fmt.Fprintf(w, "Hello %s\n", name)
+}
+
+func PostHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		fmt.Fprint(w, "Not Allowed Method")
+		return
+	}
+	name := ""
+	var data map[string]string
+	// r.parse等方法只能解析url和application/x-www-form-urlencoded的值
+	if r.Header.Get("Content-Type") == "application/json" {
+		err := json.NewDecoder(r.Body).Decode(&data)
+		if err != nil {
+			fmt.Printf("json parse error: %v\n", err)
+		} else {
+			if v, ok := data["name"]; ok {
+				name = v
+			}
+		}
+	}
+	if name == "" {
+		name = "client"
+	}
+	fmt.Fprintf(w, "Hello %s\n", name)
+}
+
 func Startup() {
-	http.HandleFunc("/", SampleHandler)
+	http.HandleFunc("/", MetaHandler)
+	http.HandleFunc("/meta", MetaHandler)
 	// http.HandleFunc("/cookie/", IndexHanle)  处理/cookie/*
-	http.HandleFunc("/cookie", IndexHandle)
-	http.HandleFunc("/template", SampleTemplate)
+	http.HandleFunc("/cookie", CookieHandler)
+	http.HandleFunc("/template", TemplateHandler)
+	http.HandleFunc("/get", GetHandler)
+	http.HandleFunc("/post", PostHandler)
 	err := http.ListenAndServe("0.0.0.0:8181", nil)
 	if err != nil {
 		fmt.Printf("Failed listen: %v", err)

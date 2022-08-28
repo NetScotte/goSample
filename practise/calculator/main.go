@@ -3,18 +3,17 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/netscotte/go_sample/practise/calculator/stack"
+	"github.com/netscotte/goSample/practise/calculator/stack"
 	"os"
 	"strconv"
 )
 
-func getInput() string{
+func getInput() string {
 	fmt.Println("input a express: ")
 	buf := bufio.NewReader(os.Stdin)
 	a, _ := buf.ReadString('\n')
 	return a
 }
-
 
 func transPostExpress(express string) (postExpress []string) {
 	// express = 2*(9+6/3-5)+4
@@ -48,12 +47,12 @@ func transPostExpress(express string) (postExpress []string) {
 			}
 			postExpress = append(postExpress, string(number))
 		// 遇到左括号直接压栈
-		case express[i] == '(' :
+		case express[i] == '(':
 			opStack.Push(fmt.Sprintf("%c", express[i]))
 			i++
 		// 遇到右括号，将栈中的所有操作符全都压到后缀表达式，直到遇到左括号
 		case express[i] == ')':
-			for ! opStack.Empty() {
+			for !opStack.Empty() {
 				op, err := opStack.Pop()
 				if err != nil {
 					fmt.Println("error get pop")
@@ -68,7 +67,7 @@ func transPostExpress(express string) (postExpress []string) {
 		// 若遇到运算符，则比较
 		case express[i] == '+' || express[i] == '-' || express[i] == '*' || express[i] == '/':
 			// 栈顶为空，直接压入
-			if opStack.Empty(){
+			if opStack.Empty() {
 				opStack.Push(fmt.Sprintf("%c", express[i]))
 				i++
 				continue
@@ -96,7 +95,7 @@ func transPostExpress(express string) (postExpress []string) {
 			i++
 		}
 	}
-	for ! opStack.Empty() {
+	for !opStack.Empty() {
 		value, err := opStack.Pop()
 		if err != nil {
 			fmt.Println("error, can't pop")
@@ -109,7 +108,7 @@ func transPostExpress(express string) (postExpress []string) {
 
 func calculate(postExpress []string) (result float64) {
 	var s stack.Stack
-	for _, value := range(postExpress) {
+	for _, value := range postExpress {
 		if value == "+" || value == "-" || value == "*" || value == "/" {
 			n1, err := s.Pop()
 			if err != nil {
@@ -119,18 +118,18 @@ func calculate(postExpress []string) (result float64) {
 			n2, err := s.Pop()
 			if err != nil {
 				fmt.Println("error no anything in stack")
-				return 
+				return
 			}
 			num2, err := strconv.ParseFloat(n1, 64)
 			num1, err := strconv.ParseFloat(n2, 64)
 			var r1 float64
 			switch value {
 			case "+":
-				r1 = num1 + num2 
+				r1 = num1 + num2
 			case "-":
 				r1 = num1 - num2
 			case "*":
-				r1 = num1 * num2 
+				r1 = num1 * num2
 			case "/":
 				r1 = num1 / num2
 			default:
@@ -144,12 +143,12 @@ func calculate(postExpress []string) (result float64) {
 		}
 	}
 
-	resultString, err := s.Pop() 
+	resultString, err := s.Pop()
 	if err != nil {
 		fmt.Printf("error get final result: %v", err)
 	}
 	result, err = strconv.ParseFloat(resultString, 64)
-	return 
+	return
 
 }
 
