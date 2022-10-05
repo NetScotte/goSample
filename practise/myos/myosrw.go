@@ -5,9 +5,10 @@ package myos
 // 可以使用ioutil的Readfile()和WriteFile()读写文件
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io"
-	"log"
 	"os"
+	"strings"
 )
 
 // 读取文件内容
@@ -90,4 +91,28 @@ func Sample_filesystem() {
 	if len(fileinfo) != 0 {
 		fmt.Printf("(file.Readdir) first_file_info: %v: \n%+v\n", fileinfo[0].Name(), fileinfo[0])
 	}
+}
+
+func FileOperator(filePath string) (err error) {
+	// 如果无法打开，则说明异常
+	_, err = os.Stat(filePath)
+	if err != nil {
+		log.Error(err)
+	}
+	// 获取文件名 a.txt
+	filePathSlice := strings.Split(filePath, "/")
+	fileName := filePathSlice[len(filePathSlice)-1]
+	log.Infof("fileName: %v", fileName)
+
+	// 获取文件后缀,  这里.tar.gz算后缀
+	fileNameSlice := strings.Split(fileName, ".")
+	fileNameNoExt := fileNameSlice[0]
+	log.Infof("fileNameNoExt: %s", fileNameNoExt)
+
+	fileExt := ""
+	if len(fileNameSlice) > 1 {
+		fileExt += "." + strings.Join(fileNameSlice[1:], ".")
+	}
+	log.Infof("fileNameExt: %s", fileExt)
+	return
 }
