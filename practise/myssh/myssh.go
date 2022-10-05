@@ -42,9 +42,17 @@ func GetSSHClient(ip string, port int, username string, password string) (s *SSH
 }
 
 func (s *SSHClient) sshRun(cmd string) (result string, err error) {
+	defer func() {
+		if p := recover(); p != nil {
+			err = fmt.Errorf("%v", p)
+		}
+	}()
 	err = s.Session.Run(cmd)
 	if err != nil {
-		return s.StdErr.String(), err
+		return
+	}
+	if s.StdErr.String() != "" {
+		return "", fmt.Errorf("%v", s.StdErr.String())
 	}
 	return s.StdOut.String(), nil
 }
