@@ -1,18 +1,19 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"sort"
 )
 
 func main() {
-	a := []int{5, 1, 4, 2, 4}
-	sort.Ints(a)
-	sort.Sort(sort.Reverse(sort.IntSlice(a)))
-	fmt.Println(a)
-	if sort.SearchInts(a, 7) > 0 {
-		fmt.Println(true)
-	} else {
-		fmt.Println(false)
+	rawJson := `{"name": "netliu", "age": 12, "sex": "man"}`
+	type Man struct {
 	}
+	m := new(Man)
+	err := json.Unmarshal([]byte(rawJson), m)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("m is: %+v\n", *m)
+
 }

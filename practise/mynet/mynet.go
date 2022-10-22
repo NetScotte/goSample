@@ -1,16 +1,17 @@
 package mynet
 
 import (
-	"net"
-	"log"
-	"fmt"
 	"bufio"
+	"fmt"
+	"log"
+	"net"
+	"net/url"
 	"os"
 	"time"
 )
 
 func Sample_client(address string) {
-	client_log := log.New(os.Stdout, "(client: )", log.LstdFlags | log.Lshortfile)
+	client_log := log.New(os.Stdout, "(client: )", log.LstdFlags|log.Lshortfile)
 	// 连接到服务器
 	client_log.Println("start connect to ", address)
 	con, err := net.Dial("tcp", address)
@@ -18,8 +19,8 @@ func Sample_client(address string) {
 		client_log.Fatal(err)
 	}
 	// con有一些方法Read, Write, Close, LocalAddr, RemoteAddr, SetDeadline
-	con.SetDeadline(time.Now().Add(1*time.Minute))
-	
+	con.SetDeadline(time.Now().Add(1 * time.Minute))
+
 	client_log.Println("start to send message to server")
 	// 向服务器发送信息
 	fmt.Fprintf(con, "Hello server , I'am client\r\n\r\n")
@@ -36,7 +37,7 @@ func Sample_client(address string) {
 }
 
 func Sample_server(address string) {
-	server_log := log.New(os.Stdout, "(server: )", log.Lshortfile | log.LstdFlags)
+	server_log := log.New(os.Stdout, "(server: )", log.Lshortfile|log.LstdFlags)
 	// 开始监听
 	server_log.Println("start to listen on ", address)
 	ln, err := net.Listen("tcp", address)
@@ -95,4 +96,18 @@ func Sample_utils() {
 	// 获取主机的mac
 	mac, _ := net.ParseMAC("01:23:45:67:89:ab")
 	log.Println("(net.ParseMAC) 01:23:45:67:89:ab -> ", mac)
+}
+
+func basic() {
+	s := "http://www.baidu.com/aa/pp?ticket=cc"
+	log.Printf("url: %v", s)
+	result, err := url.Parse(s)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Printf("Schema: %v", result.Scheme)
+	log.Printf("Host: %v", result.Host)
+	log.Printf("Path: %v", result.Path)
+	log.Printf("RawQuery: %v", result.RawQuery)
+
 }
