@@ -4,7 +4,7 @@
 // - protoc             v3.15.7
 // source: grpcExample/helloworld/helloworld.proto
 
-package __
+package helloworld
 
 import (
 	context "context"
