@@ -1,11 +1,14 @@
-package main
+package basicTypes
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
 // Printf提供：
 // %s 字符串
 // %T   类型
-func pointer_sample() {
+func TestPoint(t *testing.T) {
 	fmt.Println("pointer_sample")
 	// define a pointer
 	var p *int
@@ -22,7 +25,7 @@ func pointer_sample() {
 	fmt.Println()
 }
 
-func nil_sample() {
+func TestNil(t *testing.T) {
 	fmt.Println("nil_sample:")
 	// use nil direct
 	fmt.Println("nil: ", nil)
@@ -33,7 +36,7 @@ func nil_sample() {
 	fmt.Println()
 }
 
-func struct_sample() {
+func TestStruct(t *testing.T) {
 	fmt.Println("strcut_sample:")
 	// define struct
 	type People struct {
@@ -51,7 +54,7 @@ func struct_sample() {
 	fmt.Println()
 }
 
-func array_sample() {
+func TestArray(t *testing.T) {
 	// define a array
 	var array [2]string
 	var array2 = [2]string{"a", "b"}
@@ -71,7 +74,7 @@ func array_sample() {
 	fmt.Println()
 }
 
-func slice_sample() {
+func TestSlice(t *testing.T) {
 	s := []int{1, 2, 3, 4}
 	s[0] = 0
 	m := make([]int, 0, 5)
@@ -89,7 +92,7 @@ func slice_sample() {
 	fmt.Println("a is: ", a)
 }
 
-func map_sample() {
+func TestMap(t *testing.T) {
 	// define map, error sample: m = make(map[string]string ; m := map[string]string
 	m := make(map[string]string)
 
@@ -108,15 +111,13 @@ func map_sample() {
 	// can't use %s for ok
 	fmt.Println("value: ", value, "ok: ", ok)
 
+	// 获取长度
+	fmt.Println(len(m))
+
 	// delete map key
 	delete(m, "bj")
-}
 
-func main() {
-	pointer_sample()
-	nil_sample()
-	struct_sample()
-	array_sample()
-	slice_sample()
-	map_sample()
+	// 获取长度
+	fmt.Println(len(m))
+
 }

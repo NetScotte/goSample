@@ -11,6 +11,7 @@ func TestStringSet_Add(t *testing.T) {
 	set.Add("a")
 	set.Add("3")
 	set.Add("c")
+	set.Remove("4")
 	fmt.Println(set)
 }
 

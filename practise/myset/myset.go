@@ -12,9 +12,11 @@ func NewStringSet() StringSet {
 }
 
 func (set StringSet) String() string {
-	var keys []string
+	keys := make([]string, len(set))
+	index := 0
 	for key, _ := range set {
-		keys = append(keys, key)
+		keys[index] = key
+		index += 1
 	}
 	return strings.Join(keys, ", ")
 }
@@ -34,9 +36,11 @@ func NewSet() Set {
 }
 
 func (set Set) String() string {
-	var keys []string
+	keys := make([]string, len(set))
+	index := 0
 	for key, _ := range set {
-		keys = append(keys, fmt.Sprint(key))
+		keys[index] = fmt.Sprint(key)
+		index += 1
 	}
 	return strings.Join(keys, ",")
 }
