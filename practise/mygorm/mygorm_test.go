@@ -1,6 +1,7 @@
 package mygorm
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -39,6 +40,7 @@ func Test_GetById(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
+			fmt.Println(user)
 			if user.Username != test.want {
 				t.Errorf("input id: %v, want username: %v, get: %v\n", test.input, test.want, user.Username)
 			}
@@ -62,4 +64,16 @@ func TestDisableUser(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+func TestGetPeople(t *testing.T) {
+	GetPeople()
+}
+
+func TestGetUserOrder(t *testing.T) {
+	GetUserOrder()
+}
+
+func TestRandom(t *testing.T) {
+	Random()
 }

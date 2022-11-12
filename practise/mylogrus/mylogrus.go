@@ -7,8 +7,8 @@ import (
 func Basic() {
 	logger := log.New()
 	logger.Info("basic info log")
-	logger.Info("%v", logger.Out)
-	logger.Info("%v", logger.Formatter)
+	logger.Infof("%v", logger.Out)
+	logger.Infof("%v", logger.Formatter)
 }
 
 func JsonLog() {
