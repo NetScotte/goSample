@@ -119,5 +119,35 @@ func TestMap(t *testing.T) {
 
 	// 获取长度
 	fmt.Println(len(m))
+}
 
+func TestInterfaceType(t *testing.T) {
+	var i interface{}
+	var a int
+	a = 3
+	i = a
+	fmt.Println(i)
+
+	//var s string
+	//s = "a"
+	//i = s
+	//fmt.Println(i)
+
+	// switch中的用法, 将其转换为具体的类型并处理
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("%T\n", v)
+	case string:
+		fmt.Printf("%T\n", v)
+	default:
+		fmt.Printf("%T\n", v)
+	}
+
+	// 将其转为另一个类型
+	n, ok := i.(string)
+	if !ok {
+		fmt.Println("i not string")
+	} else {
+		fmt.Printf("i is string, real value: %v (%T)\n", n, n)
+	}
 }
