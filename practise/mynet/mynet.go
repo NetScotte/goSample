@@ -1,7 +1,8 @@
-package mynet
+package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -44,28 +45,33 @@ func Sample_server(address string) {
 	if err != nil {
 		server_log.Fatalf("failed listen on %v : %v", address, err)
 	}
+	defer ln.Close()
+
 	// 等待连接
-	server_log.Println("wait client connect....")
-	client_con, err := ln.Accept()
-	if err != nil {
-		server_log.Fatalf("failed accept from client: %v", err)
+	for {
+		server_log.Println("wait client connect....")
+		client_con, err := ln.Accept()
+		if err != nil {
+			server_log.Fatalf("failed accept from client: %v", err)
+		}
+		go func() {
+			server_log.Println("client has connected, wait 20s to receive it's message")
+			time.Sleep(time.Duration(20 * time.Second))
+			// 获取客户端发送的请求
+			client_message, err := bufio.NewReader(client_con).ReadString('\n')
+			if err != nil {
+				server_log.Fatalf("failed get message from client: %v", err)
+			}
+			server_log.Println("get message from client: ", client_message)
+			// 向客户端发送响应, 另外可以用client_con.Write([]byte), io.WriteString(client_con, message)
+			message := "Hello client, I have receive your message\r\n"
+			server_log.Println("start to send message to client: ", message)
+			fmt.Fprintf(client_con, message)
+			// 关闭连接
+			server_log.Println("start to close connection")
+			client_con.Close()
+		}()
 	}
-	server_log.Println("client has connected, receive it's message")
-	// 获取客户端发送的请求
-	client_message, err := bufio.NewReader(client_con).ReadString('\n')
-	if err != nil {
-		server_log.Fatalf("failed get message from client: %v", err)
-	}
-	server_log.Println("get message from client: ", client_message)
-	// 向客户端发送响应, 另外可以用client_con.Write([]byte), io.WriteString(client_con, message)
-	message := "Hello client, I have receive your message\r\n"
-	server_log.Println("start to send message to client: ", message)
-	fmt.Fprintf(client_con, message)
-	// 关闭连接
-	server_log.Println("start to close connection")
-	client_con.Close()
-	ln.Close()
-	server_log.Println("end all")
 }
 
 func Sample_utils() {
@@ -110,4 +116,25 @@ func basic() {
 	log.Printf("Path: %v", result.Path)
 	log.Printf("RawQuery: %v", result.RawQuery)
 
+}
+
+
+func main() {
+	var action string 
+	var addr string 
+	flag.StringVar(&action, "m", "", "设置运行方式，如server或client")
+	flag.StringVar(&addr, "a", "", "设置运行地址")
+	flag.Parse()
+	if action == "" {
+		flag.Usage()
+		return 
+	}
+	switch action {
+	case "server":
+		Sample_server(addr)
+	case "client":
+		Sample_client(addr)
+	default:
+		fmt.Println("Error: -m shoud be server or action")
+	}
 }
