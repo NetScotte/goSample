@@ -70,6 +70,7 @@ func Consumer() {
 	c, err := rocketmq.NewPushConsumer(
 		consumer.WithGroupName("testGroup"),
 		consumer.WithNsResolver(primitive.NewPassthroughResolver([]string{"127.0.0.1:9876"})),
+		// consumer.WithConsumerModel(consumer.BroadCasting), // 默认为集群模式，可以设置为广播模式
 	)
 	if err != nil {
 		fmt.Println(err)
