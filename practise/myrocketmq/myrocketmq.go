@@ -1,5 +1,6 @@
 package main
 
+// 代码示例：https://github.com/apache/rocketmq-client-go/tree/v2.1.1/examples
 import (
 	"context"
 	"encoding/json"
