@@ -10,6 +10,7 @@ import (
 	"github.com/apache/rocketmq-client-go/v2/consumer"
 	"github.com/apache/rocketmq-client-go/v2/primitive"
 	"github.com/apache/rocketmq-client-go/v2/producer"
+	"github.com/apache/rocketmq-client-go/v2/rlog"
 	"os"
 )
 
@@ -22,6 +23,7 @@ func init() {
 }
 
 func Producer() {
+	rlog.SetLogLevel("error")
 	c, err := rocketmq.NewProducer(
 		producer.WithNsResolver(primitive.NewPassthroughResolver([]string{"127.0.0.1:9876"})),
 		producer.WithRetry(2),
@@ -67,6 +69,7 @@ func Producer() {
 }
 
 func Consumer() {
+	rlog.SetLogLevel("error")
 	sig := make(chan os.Signal)
 	c, err := rocketmq.NewPushConsumer(
 		consumer.WithGroupName("testGroup"),
