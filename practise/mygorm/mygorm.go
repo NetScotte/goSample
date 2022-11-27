@@ -5,6 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"time"
 )
 
 var (
@@ -16,7 +17,7 @@ var (
 )
 
 func GetDB(debug bool) *gorm.DB {
-	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4", UserName, Password, DBHost, Port, DBName)
+	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=true", UserName, Password, DBHost, Port, DBName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err)
@@ -36,6 +37,16 @@ type User struct {
 	Password  string
 	CreatedAt []uint8
 	UpdatedAt []uint8
+}
+
+type UserTimestamp struct {
+	Id        uint `gorm:"primaryKey"`
+	Username  string
+	Phone     string
+	IsActive  bool
+	Password  string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type People struct {
@@ -68,12 +79,12 @@ func (u *User) TableName() string {
 }
 
 func (u *User) String() string {
-	return fmt.Sprintf("id: %v, username: %v, phone: %v, isActive: %v, createdAt: %v\n", u.Id, u.Username, u.Phone, u.IsActive, string(u.CreatedAt))
+	return fmt.Sprintf("id: %v, username: %v, phone: %v, isActive: %v, createdAt: %v\n", u.Id, u.Username, u.Phone, u.IsActive, u.CreatedAt)
 }
 
 func Migrate() error {
 	db := GetDB(true)
-	err := db.AutoMigrate(&User{})
+	err := db.AutoMigrate(&UserTimestamp{})
 	if err != nil {
 		log.Error(err)
 		return err
@@ -112,7 +123,7 @@ func GetById(id uint) (*User, error) {
 
 // GetList 查询用户列表
 func GetList(page int, size int, username string) ([]*User, error) {
-	userList := []*User{}
+	var userList []*User
 	if page < 1 {
 		page = 1
 	}
@@ -131,7 +142,9 @@ func GetList(page int, size int, username string) ([]*User, error) {
 		return nil, err
 	}
 	for _, user := range userList {
-		log.Info(user)
+		log.Info(user.Username)
+		log.Info(user.IsActive)
+		log.Info(user.CreatedAt)
 	}
 	return userList, nil
 
@@ -192,14 +205,13 @@ func GetUserOrder() {
 }
 
 func Random() {
+	var records []*User
 	DB := GetDB(true)
-	records := &User{
-		Username: "liufy47",
-		Phone:    "13222734512",
-	}
-	result := DB.Model(&User{}).Where(records).Update("is_active", false)
+	availableTime := time.Now().Add(-3 * 24 * 60 * 60 * time.Second)
+	result := DB.Where("updated_at < ?", availableTime).Find(&records)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 	}
+
 	fmt.Printf("affected row: %v\n", result.RowsAffected)
 }

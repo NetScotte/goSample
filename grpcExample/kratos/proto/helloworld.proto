@@ -16,6 +16,12 @@ service HelloService {
 
 message Request {
   string name = 1;
+  enum Status {
+    UNKNOWN = 0;
+    ONLINE = 1;
+    OFFLINE = 2;
+  }
+  Status status = 2;
 }
 
 message Response {

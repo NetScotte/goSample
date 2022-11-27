@@ -21,9 +21,9 @@ import (
 )
 
 var (
-	Name = "Hello"
-	GRPCAddress = "localhost:9090"
-	HTTPAddress = "localhost:8080"
+	Name          = "Hello"
+	GRPCAddress   = "localhost:9091"
+	HTTPAddress   = "localhost:8081"
 	JaegerAddress = "http://localhost:14268"
 )
 
@@ -51,15 +51,18 @@ func NotFound() error {
 func (s *HelloServiceService) SayHello(ctx context.Context, req *pb.Request) (*pb.Response, error) {
 	s.log.Infof("receive %v", req.Name)
 	msg := fmt.Sprintf("Hello %v", req.Name)
+	s.log.Infof("status: %v", req.GetStatus().String())
+	s.log.Infof("status: %v", req.GetStatus().Number())
+	s.log.Infof("status: %v", req.GetStatus().Enum())
 	if req.Name == "error" {
 		err := fmt.Errorf("%v", req.Name)
 		s.log.Errorf("%v", err)
 		return &pb.Response{}, err
-	}else if req.Name == "params" {
+	} else if req.Name == "params" {
 		err := pb.ErrorParamsError("%v", req.Name)
 		s.log.Errorf("%v", err)
 		return &pb.Response{}, err
-	}else if req.Name == "found" {
+	} else if req.Name == "found" {
 		err := NotFound()
 		s.log.Errorf("%v", err)
 		return &pb.Response{}, err
@@ -90,9 +93,7 @@ func setTracerProvider(url string) error {
 }
 
 type stdLogger struct {
-
 }
-
 
 func main() {
 	logger := NewLogrusLogger()
@@ -108,24 +109,23 @@ func main() {
 	httpSrv := http.NewServer(
 		http.Address(HTTPAddress),
 		http.Middleware(
-				recovery.Recovery(),
-				tracing.Server(),
-				logging.Server(logger),
-			),
-		)
+			recovery.Recovery(),
+			tracing.Server(),
+			logging.Server(logger),
+		),
+	)
 	grpcSrv := grpc.NewServer(
 		grpc.Address(GRPCAddress),
 		grpc.Middleware(
 			recovery.Recovery(),
 			tracing.Server(),
 			logging.Server(logger),
-			),
-		)
+		),
+	)
 
 	s := NewHelloServiceService(logger)
 	pb.RegisterHelloServiceServer(grpcSrv, s)
 	pb.RegisterHelloServiceHTTPServer(httpSrv, s)
-
 
 	app := kratos.New(
 		kratos.Name(Name),
@@ -133,8 +133,8 @@ func main() {
 		kratos.Server(
 			grpcSrv,
 			httpSrv,
-			),
-		)
+		),
+	)
 	l.Info("start server")
 	if err := app.Run(); err != nil {
 		l.Error(err)
