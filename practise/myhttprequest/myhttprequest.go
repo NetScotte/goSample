@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -60,7 +61,7 @@ func BasicHTTPRequest(method, url string, requestData []byte) (responseData []by
 	defer response.Body.Close()
 	log.Printf("status: %v\n", response.StatusCode)
 
-	responseData, err = ioutil.ReadAll(response.Body)
+	responseData, err = io.ReadAll(response.Body)
 	if err != nil {
 		return
 	}

@@ -1,4 +1,4 @@
-package myhttpserver
+package main
 
 import (
 	"encoding/json"
@@ -77,6 +77,14 @@ func GetHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	name := r.FormValue("name")
+	fmt.Println(name)
+	var data map[string]string
+	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(data)
+	}
 	if name == "" {
 		name = "client"
 	}
@@ -107,7 +115,7 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello %s\n", name)
 }
 
-func Startup() {
+func main() {
 	http.HandleFunc("/", MetaHandler)
 	http.HandleFunc("/meta", MetaHandler)
 	// http.HandleFunc("/cookie/", IndexHanle)  处理/cookie/*

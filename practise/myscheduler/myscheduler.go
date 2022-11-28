@@ -7,18 +7,34 @@ import (
 	"time"
 )
 
-type EasyJob struct {
-	Error error
+// Job 通用简单的Job， 其他job应该
+type Job struct {
+	Error  error
+	Params string // 任何参数，通过json序列化和反序列化
+	Fn     func() error
 }
 
-func (j *EasyJob) Run() {
+func NewEasyJob(params string, fn func() error) *Job {
+	return &Job{
+		Params: params,
+		Fn:     fn,
+	}
+}
+
+func (j *Job) Run() {
 	defer func() {
 		if e := recover(); e != nil {
 			j.Error = fmt.Errorf("%v", e)
 		}
 	}()
-	fmt.Println("run job")
-	panic("手动触发了panic")
+	if j.Fn != nil {
+		err := j.Fn()
+		if err != nil {
+			j.Error = err
+		}
+	} else {
+		j.Error = fmt.Errorf("无法执行job， fn未指定！！！")
+	}
 }
 
 func Basic() {
@@ -48,7 +64,7 @@ func JobSample() {
 	fmt.Println("start")
 	sig := make(chan os.Signal, 1)
 	c := cron.New(cron.WithSeconds())
-	entryId, err := c.AddJob("* * * * * *", &EasyJob{})
+	entryId, err := c.AddJob("* * * * * *", &Job{})
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -58,7 +74,7 @@ func JobSample() {
 
 	time.Sleep(5 * time.Second)
 	entry := c.Entry(entryId)
-	job := entry.Job.(*EasyJob)
+	job := entry.Job.(*Job)
 	fmt.Println(job.Error)
 
 	fmt.Println("wait sig to exit")
