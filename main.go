@@ -1,8 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
+
+var onece sync.Once
+
+func Job() {
+	fmt.Println("run job")
+}
+
+func RunJob() {
+	onece.Do(Job)
+}
 
 func main() {
-	a := 3
-	fmt.Println(a)
+	for i := 0; i < 5; i++ {
+		RunJob()
+	}
 }

@@ -6,6 +6,7 @@ package myjson
 // NewDecoder(r io.Reader) *Decoder   可以直接将io.Reader对象中的数据读到数据结构中, 适用于http中的body
 // NewEncoder(w io.Writer) *Encoder   反之
 // 将结构体转为json数据时，注意要指明json tag，否则可能是大写字母
+// 如何解析key不固定的json内容？  map[string]object，string代表不固定的key，object代表固定的对象，
 import (
 	"encoding/json"
 	"fmt"

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
@@ -16,6 +17,8 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
+	"io"
+	"os"
 
 	pb "github.com/netscotte/goSample/grpcExample/kratos/proto"
 )
@@ -108,6 +111,7 @@ func main() {
 
 	httpSrv := http.NewServer(
 		http.Address(HTTPAddress),
+		http.TLSConfig(GetTlSConfig()),
 		http.Middleware(
 			recovery.Recovery(),
 			tracing.Server(),
@@ -139,4 +143,34 @@ func main() {
 	if err := app.Run(); err != nil {
 		l.Error(err)
 	}
+}
+
+func GetTlSConfig() *tls.Config {
+	certPath := "/Users/netscotte/cert/no_ca_cert/easy.crt"
+	certKey := "/Users/netscotte/cert/no_ca_cert/easy.key"
+	fp, err := os.Open(certPath)
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
+	certByte, err := io.ReadAll(fp)
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
+
+	fp, err = os.Open(certKey)
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
+	keyByte, err := io.ReadAll(fp)
+	if err != nil {
+		log.Error(err)
+		return nil
+	}
+
+	cert, err := tls.X509KeyPair(certByte, keyByte)
+	cfg := &tls.Config{Certificates: []tls.Certificate{cert}}
+	return cfg
 }
