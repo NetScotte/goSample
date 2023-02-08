@@ -123,6 +123,8 @@ func main() {
 	http.HandleFunc("/template", TemplateHandler)
 	http.HandleFunc("/get", GetHandler)
 	http.HandleFunc("/post", PostHandler)
+	// http.Handle
+	// http.Handle(pattern string, handler Handler)
 	err := http.ListenAndServe("0.0.0.0:8181", nil)
 	if err != nil {
 		fmt.Printf("Failed listen: %v", err)

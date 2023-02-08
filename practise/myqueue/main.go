@@ -13,6 +13,12 @@ Get	获取元素,
 
 */
 
+type Queue interface {
+	Add(v interface{})
+	Pop() interface{}
+	Empty() bool
+}
+
 func basic() {
 	// 创建一个基本队列
 	q := queue.Queue{}

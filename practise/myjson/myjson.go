@@ -64,19 +64,19 @@ func SampleMarshal() {
 		Age:  12,
 	}
 
-	jsonstrings, err := json.Marshal(netliu)
+	jsonStrings, err := json.Marshal(netliu)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("type: %T, value: %s\n", jsonstrings, jsonstrings)
+	fmt.Printf("type: %T, value: %s\n", jsonStrings, jsonStrings)
 
 	humans := []Human{
 		{Name: "netliu", Age: 12},
 		{Name: "freeze", Age: 22},
 	}
-	humansting, err := json.Marshal(humans)
+	humanString, err := json.Marshal(humans)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("type: %T, value: %s\n", humansting, humansting)
+	fmt.Printf("type: %T, value: %s\n", humanString, humanString)
 }

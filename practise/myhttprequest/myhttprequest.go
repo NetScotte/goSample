@@ -24,6 +24,8 @@ func SampleHttp() {
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
 	}
+	// 使用默认的http客户端可以复用TCP连接
+	// http.DefaultClient.Do(req)
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
